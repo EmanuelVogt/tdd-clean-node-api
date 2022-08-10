@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests --watch",
-    "test:staged": "jest --passWithNoTests",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:staged": "yarn test -- -- indRelatedTest --runInBand",
+    "test:unit": "yarn test -- --watch -c jest-unit-config.js",
+    "test:integration": "yarn test -- --watch -c jest-integration-config.js",
+    "test:ci": "yarn test -- --coverage",
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src --ext .ts --fix",
     "prepare": "husky install"
