@@ -20,10 +20,10 @@ describe("SignUp routes", () => {
       .post("/api/signup")
       .send({
         name: "any_name",
-        email: "any_email",
+        email: "any_email@mail.com",
         password: "any_password",
         passwordConfirmation: "any_password",
       })
-      .expect(200, { ok: "ok" });
+      .expect(200);
   });
 });
