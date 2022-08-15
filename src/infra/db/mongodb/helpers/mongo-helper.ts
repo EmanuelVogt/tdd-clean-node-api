@@ -3,7 +3,7 @@ export const MongoHelper = {
   client: null as MongoClient,
 
   async connect(uri: string): Promise<void> {
-    this.client = await MongoClient.connect(process.env.MONGO_URL);
+    this.client = await MongoClient.connect(uri, {});
   },
 
   async disconect(): Promise<void> {
@@ -11,6 +11,6 @@ export const MongoHelper = {
   },
 
   getCollection(name: string): Collection {
-    return this.client.db().collection(name)
+    return this.client.db().collection(name);
   },
 };
