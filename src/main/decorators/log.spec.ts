@@ -84,7 +84,7 @@ describe('Log Controller decorator', () => {
     const httpResponse = await sut.handle(httpRequest)
 
     expect(handleSpy).toReturn()
-    expect(httpResponse).toEqual(httpResponse)
+    expect(httpResponse).toEqual(ok(makeFakeAccount()))
     expect(httpRequest.body).not.toEqual({
       email: "wrong_email",
       name: "wrong_name",
