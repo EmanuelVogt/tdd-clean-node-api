@@ -15,16 +15,13 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 };
 
-const makeFakeAccount = (): AccountModel => {
-  const fakeAccount = {
-    id: "valid_id",
-    name: "valid_name",
-    email: "valid@email.com",
-    password: "valid_password",
-  }
+const makeFakeAccount = (): AccountModel => ({
+  id: "valid_id",
+  name: "valid_name",
+  email: "valid@email.com",
+  password: "valid_password",
+})
 
-  return fakeAccount
-}
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async create(): Promise<AccountModel> {
