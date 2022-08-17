@@ -5,6 +5,7 @@ import {
   ServerError,
 } from "../../errors";
 import { EmailValidator, AccountModel, AddAccount } from "./signup-protocols";
+import { serverError } from "../../helpers/http-helper";
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -35,6 +36,7 @@ interface SutTypes {
   sut: SignUpController;
   emailValidatorStub: EmailValidator;
   addAccountStub: AddAccount;
+  fakeError: Error
 }
 
 const makeSut = (): SutTypes => {
@@ -42,10 +44,13 @@ const makeSut = (): SutTypes => {
   const addAccountStub = makeAddAccount();
 
   const sut = new SignUpController(emailValidatorStub, addAccountStub);
+  const fakeError = new Error()
+  fakeError.stack = 'any_stack'
   return {
     sut,
     emailValidatorStub,
     addAccountStub,
+    fakeError
   };
 };
 
@@ -141,7 +146,7 @@ describe("signup controller", () => {
   });
 
   test("should return 500 if EmailValidator throws", async () => {
-    const { sut, emailValidatorStub } = makeSut();
+    const { sut, emailValidatorStub, fakeError } = makeSut();
 
     jest
       .spyOn(emailValidatorStub, "ensureIsValid")
@@ -160,7 +165,7 @@ describe("signup controller", () => {
 
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
-    expect(httpResponse.body).toEqual(new ServerError());
+    expect(httpResponse).toEqual(serverError(fakeError));
   });
 
   test("should return 400 if passwordConfimation fails", async () => {
@@ -201,7 +206,7 @@ describe("signup controller", () => {
   });
 
   test("should return 500 if AddAccount throws", async () => {
-    const { sut, addAccountStub } = makeSut();
+    const { sut, addAccountStub, fakeError } = makeSut();
 
     jest.spyOn(addAccountStub, "create").mockImplementationOnce(async () => {
       return new Promise((resolve, reject) => reject(new Error()));
@@ -218,7 +223,7 @@ describe("signup controller", () => {
 
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
-    expect(httpResponse.body).toEqual(new ServerError());
+    expect(httpResponse.body).toEqual(new ServerError(fakeError.stack));
   });
 
   test("should return 200 if valid data is provided", async () => {
