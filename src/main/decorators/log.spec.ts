@@ -12,7 +12,6 @@ const makeController = (): Controller => {
     async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
       const httpResponse: HttpResponse = {
         statusCode: 200,
-
         body: {
           email: "any_mail@mail.com",
           name: "any_name",
@@ -50,5 +49,32 @@ describe('Log Controller decorator', () => {
     await sut.handle(httpRequest)
 
     expect(handleSpy).toHaveBeenCalledWith(httpRequest)
+  });
+
+  test('Should Controller handle method return valid values', async () => {
+    const { controllerStub, sut } = makeSut()
+    const handleSpy = jest.spyOn(controllerStub, 'handle')
+
+    const httpRequest = {
+      body: {
+        email: "any_mail@mail.com",
+        name: "any_name",
+        password: "any_password",
+        passwordConfirmation: "any_password"
+      }
+    }
+    const httpResponse = await sut.handle(httpRequest)
+
+    expect(handleSpy).toReturn()
+    expect(httpResponse.body).toEqual({
+      email: "any_mail@mail.com",
+      name: "any_name",
+      password: "any_password"
+    })
+    expect(httpRequest.body).not.toEqual({
+      email: "wrong_email",
+      name: "wrong_name",
+      password: "wrong_password"
+    })
   });
 });
