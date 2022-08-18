@@ -1,5 +1,5 @@
 import { Authentication } from "../../../domain/usecases/authentication";
-import { UnautorizedError, InvalidParamError, MissingParamError } from "../../errors";
+import { InvalidParamError, MissingParamError } from "../../errors";
 import { badRequest, unautorized, serverError } from "../../helpers/http-helper";
 import { HttpRequest } from "../../protocols";
 import { EmailValidator } from "../../protocols";
