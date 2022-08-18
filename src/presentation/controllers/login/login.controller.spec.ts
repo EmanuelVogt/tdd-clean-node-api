@@ -1,6 +1,6 @@
 import { Authentication } from "../../../domain/usecases/authentication";
-import { InvalidCredentialsError, InvalidParamError, MissingParamError } from "../../errors";
-import { badRequest, invalidCredentials, serverError } from "../../helpers/http-helper";
+import { UnautorizedError, InvalidParamError, MissingParamError } from "../../errors";
+import { badRequest, unautorized, serverError } from "../../helpers/http-helper";
 import { HttpRequest } from "../../protocols";
 import { EmailValidator } from "../../protocols";
 import { LoginController } from "./login.controlller";
@@ -104,12 +104,12 @@ describe('login controller', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
-  test('should return InvalidCredentials with 401 if Auth fails', async () => {
+  test('should return Unautorized with 401 if invalid credentials are provided', async () => {
     const { sut, httpRequest, authenticationStub } = makeSut();
     jest.spyOn(authenticationStub, "auth").mockImplementationOnce(
       async () => new Promise(resolve => resolve('')))
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(invalidCredentials(new InvalidCredentialsError()))
+    expect(httpResponse).toEqual(unautorized(new UnautorizedError()))
   })
 
   test('should call Authentication with correct values', async () => {

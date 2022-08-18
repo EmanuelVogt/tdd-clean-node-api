@@ -1,6 +1,6 @@
 import { Authentication } from "../../../domain/usecases/authentication";
-import { InvalidCredentialsError, InvalidParamError, MissingParamError } from "../../errors";
-import { badRequest, invalidCredentials, ok, serverError } from "../../helpers/http-helper";
+import { UnautorizedError, InvalidParamError, MissingParamError } from "../../errors";
+import { badRequest, unautorized, ok, serverError } from "../../helpers/http-helper";
 import { Controller, EmailValidator, HttpRequest, HttpResponse } from "../../protocols"
 
 export class LoginController implements Controller {
@@ -30,7 +30,7 @@ export class LoginController implements Controller {
       }
       const isAuthenticated = await this.authentication.auth(email, password)
       if (isAuthenticated === '') {
-        return invalidCredentials(new InvalidCredentialsError())
+        return unautorized(new UnautorizedError())
       }
       return ok(isAuthenticated)
     } catch (error) {
