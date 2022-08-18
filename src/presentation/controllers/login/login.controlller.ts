@@ -31,7 +31,7 @@ export class LoginController implements Controller {
       if (accessToken === '') {
         return unautorized()
       }
-      return ok(accessToken)
+      return ok({ accessToken })
     } catch (error) {
       return serverError(error);
     }
