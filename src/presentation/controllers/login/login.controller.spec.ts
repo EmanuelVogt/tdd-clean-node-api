@@ -109,7 +109,7 @@ describe('login controller', () => {
     jest.spyOn(authenticationStub, "auth").mockImplementationOnce(
       async () => new Promise(resolve => resolve('')))
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(unautorized(new UnautorizedError()))
+    expect(httpResponse).toEqual(unautorized())
   })
 
   test('should call Authentication with correct values', async () => {

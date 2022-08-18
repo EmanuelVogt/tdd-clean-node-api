@@ -1,5 +1,5 @@
 import { Authentication } from "../../../domain/usecases/authentication";
-import { UnautorizedError, InvalidParamError, MissingParamError } from "../../errors";
+import { InvalidParamError, MissingParamError } from "../../errors";
 import { badRequest, unautorized, ok, serverError } from "../../helpers/http-helper";
 import { Controller, EmailValidator, HttpRequest, HttpResponse } from "../../protocols"
 
@@ -30,7 +30,7 @@ export class LoginController implements Controller {
       }
       const isAuthenticated = await this.authentication.auth(email, password)
       if (isAuthenticated === '') {
-        return unautorized(new UnautorizedError())
+        return unautorized()
       }
       return ok(isAuthenticated)
     } catch (error) {
