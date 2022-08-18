@@ -75,4 +75,30 @@ describe('login controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(badRequest(new InvalidParamError("email")));
   });
+
+  test('should call EmailValidator with correct email', async () => {
+    const { sut, emailValidatorStub } = makeSut();
+    const isValid = jest.spyOn(emailValidatorStub, "ensureIsValid")
+    const httpRequest = {
+      body: {
+        password: "valid_password",
+        email: "valid_mail@mail.com",
+      },
+    };
+    await sut.handle(httpRequest)
+    expect(isValid).toHaveBeenCalledWith("valid_mail@mail.com");
+  });
+
+  test('should EmailValidator return true if a valid email is provided', async () => {
+    const { sut, emailValidatorStub } = makeSut();
+    const isValid = jest.spyOn(emailValidatorStub, "ensureIsValid")
+    const httpRequest = {
+      body: {
+        password: "valid_password",
+        email: "valid_mail@mail.com",
+      },
+    };
+    await sut.handle(httpRequest)
+    expect(isValid).toReturnWith(true)
+  })
 });
