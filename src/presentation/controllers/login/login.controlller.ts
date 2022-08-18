@@ -13,11 +13,11 @@ export class LoginController implements Controller {
 
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      const { email, password } = httpRequest.body;
       const requiredFields = [
         "email",
         "password",
       ];
-      const { email, password } = httpRequest.body;
       for (const field of requiredFields) {
         if (!httpRequest.body[field]) {
           return badRequest(new MissingParamError(field));

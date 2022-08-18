@@ -77,60 +77,6 @@ const makeSut = (): SutTypes => {
 };
 
 describe("signup controller", () => {
-  test("should return MissingParamError with 400 status when no name is provided", async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        email: "any_email",
-        password: "any_password",
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(badRequest(new MissingParamError("name")));
-  });
-
-  test("should return MissingParamError with 400 status when no email is provided", async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        name: "any_name",
-        password: "any_password",
-        confirmationPassword: "any_confirm_password",
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(badRequest(new MissingParamError("email")));
-  });
-
-  test("should return MissingParamError with 400 status when no password is provided", async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        name: "any_name",
-        email: "any_email",
-        passwordConfirmation: "any_confirm_password",
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(badRequest(new MissingParamError("password")));
-  });
-
-  test("should return MissingParamError with 400 status when no passwordConfirmation is provided", async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        name: "any_name",
-        email: "any_email",
-        password: "any_password",
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(
-      badRequest(
-        new MissingParamError("passwordConfirmation"))
-    );
-  });
-
   test("should return InvalidParamError with 400 status if ivalid email is provided", async () => {
     const { sut, emailValidatorStub, httpRequest } = makeSut();
     jest.spyOn(emailValidatorStub, "ensureIsValid").mockReturnValueOnce(false);
