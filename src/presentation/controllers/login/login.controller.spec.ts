@@ -1,6 +1,6 @@
 import { Authentication } from "../../../domain/usecases/authentication";
 import { InvalidParamError, MissingParamError } from "../../errors";
-import { badRequest, unautorized, serverError } from "../../helpers/http-helper";
+import { badRequest, unautorized, serverError, ok } from "../../helpers/http-helper";
 import { HttpRequest } from "../../protocols";
 import { EmailValidator } from "../../protocols";
 import { LoginController } from "./login.controlller";
@@ -126,5 +126,12 @@ describe('login controller', () => {
     })
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('should return 500 if Authentication throws', async () => {
+    const { sut, httpRequest } = makeSut()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(ok({ accessToken: "any_token" }))
+    
   })
 });
