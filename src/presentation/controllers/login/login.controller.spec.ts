@@ -27,10 +27,8 @@ const makeSut = (): SutTypes => {
   fakeError.stack = 'any_stack'
   const httpRequest = {
     body: {
-      name: "any_name",
       email: "any_email@email.com",
       password: "any_password",
-      passwordConfirmation: "any_password",
     },
   };
   return {
@@ -64,40 +62,22 @@ describe('login controller', () => {
   });
 
   test('should return IvalidParamError with 400 status if an invalid email is provided', async () => {
-    const { sut, emailValidatorStub } = makeSut();
+    const { sut, emailValidatorStub, httpRequest } = makeSut();
     jest.spyOn(emailValidatorStub, "ensureIsValid").mockReturnValueOnce(false);
-    const httpRequest = {
-      body: {
-        password: "valid_password",
-        email: "invalid_email",
-      },
-    };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(badRequest(new InvalidParamError("email")));
   });
 
   test('should call EmailValidator with correct email', async () => {
-    const { sut, emailValidatorStub } = makeSut();
+    const { sut, emailValidatorStub, httpRequest } = makeSut();
     const isValid = jest.spyOn(emailValidatorStub, "ensureIsValid")
-    const httpRequest = {
-      body: {
-        password: "valid_password",
-        email: "valid_mail@mail.com",
-      },
-    };
     await sut.handle(httpRequest)
-    expect(isValid).toHaveBeenCalledWith("valid_mail@mail.com");
+    expect(isValid).toHaveBeenCalledWith("any_email@email.com");
   });
 
   test('should EmailValidator return true if a valid email is provided', async () => {
-    const { sut, emailValidatorStub } = makeSut();
+    const { sut, emailValidatorStub, httpRequest } = makeSut();
     const isValid = jest.spyOn(emailValidatorStub, "ensureIsValid")
-    const httpRequest = {
-      body: {
-        password: "valid_password",
-        email: "valid_mail@mail.com",
-      },
-    };
     await sut.handle(httpRequest)
     expect(isValid).toReturnWith(true)
   })
