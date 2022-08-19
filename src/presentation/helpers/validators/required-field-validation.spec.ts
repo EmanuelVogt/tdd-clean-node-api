@@ -1,0 +1,20 @@
+import { MissingParamError } from "../../errors";
+import { RequiredFieldValidation } from "./required-fields-validation";
+
+interface SutTypes {
+  sut: RequiredFieldValidation
+}
+const makeSut = (): SutTypes => {
+  const sut = new RequiredFieldValidation('field')
+
+  return {
+    sut
+  }
+}
+describe('Required FieldValidation', () => {
+  test('should return MissingParamError if validation fails', () => {
+    const { sut } = makeSut()
+    const error = sut.validate({ name: 'any_name' })
+    expect(error).toEqual(new MissingParamError('field'))
+  })
+});
