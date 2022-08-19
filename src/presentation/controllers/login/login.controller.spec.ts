@@ -1,8 +1,11 @@
-import { Authentication } from "../../../domain/usecases/authentication";
+import {
+  Authentication,
+  AuthenticationModel,
+  HttpRequest,
+  Validation
+} from "./login-protocols";
 import { MissingParamError } from "../../errors";
 import { badRequest, unautorized, serverError, ok } from "../../helpers/http";
-import { Validation } from "../../protocols/validation";
-import { HttpRequest } from "../../protocols";
 import { LoginController } from "./login.controlller";
 
 const makeValidation = (): Validation => {
@@ -16,7 +19,7 @@ const makeValidation = (): Validation => {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth(email: string, password: string): Promise<string> {
+    async auth({ email, password }: AuthenticationModel): Promise<string> {
       return new Promise(resolve => resolve('any_token'))
     }
   }
@@ -65,7 +68,7 @@ describe('login controller', () => {
     const { sut, httpRequest, authenticationStub } = makeSut();
     const authSpy = jest.spyOn(authenticationStub, "auth")
     await sut.handle(httpRequest)
-    expect(authSpy).toHaveBeenCalledWith("any_email@email.com", "any_password",);
+    expect(authSpy).toHaveBeenCalledWith({ "email": "any_email@email.com", "password": "any_password" });
   });
 
   test('should return 500 if Authentication throws', async () => {
