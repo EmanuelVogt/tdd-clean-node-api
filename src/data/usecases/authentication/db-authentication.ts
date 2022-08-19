@@ -9,13 +9,10 @@ export class DbAuthentication implements Authentication {
 
   async auth({ email, password }: AuthenticationModel): Promise<string> {
     const account = await this.loacAccountByEmailRepository.load(email)
-    if (!account) {
-      return null
-    }
     const passwordMatch = this.hashComparer.compare(password, account.password)
-    if (!passwordMatch) {
-      return null
+    if (account && passwordMatch) {
+      return new Promise(resolve => resolve('any_token'))
     }
-    return new Promise(resolve => resolve('any_token'))
+    return null
   }
 }
