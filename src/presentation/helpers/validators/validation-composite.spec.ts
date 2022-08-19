@@ -41,4 +41,10 @@ describe('Validation Composite', () => {
     expect(error).toEqual(new Error())
     expect(error).not.toEqual(new MissingParamError('field'))
   });
+
+  test('should return if validation fails', () => {
+    const { sut } = makeSut()
+    const error = sut.validate({ field: "any_value" })
+    expect(error).toBeFalsy
+  });
 });
