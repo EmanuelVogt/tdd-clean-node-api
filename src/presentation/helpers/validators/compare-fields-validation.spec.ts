@@ -1,4 +1,4 @@
-import { InvalidParamError, MissingParamError } from "../../errors";
+import { InvalidParamError } from "../../errors";
 import { CompareFieldsValidation } from "./compare-fields-validation";
 
 interface SutTypes {
