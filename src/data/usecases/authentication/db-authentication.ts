@@ -6,6 +6,10 @@ export class DbAuthentication implements Authentication {
   async auth({ email, password }: AuthenticationModel): Promise<string> {
     const account = await this.loacAccountByEmailRepository.load(email)
 
+    if (!account) {
+      return null
+    }
+
     return new Promise(resolve => resolve('any_token'))
   }
 }
