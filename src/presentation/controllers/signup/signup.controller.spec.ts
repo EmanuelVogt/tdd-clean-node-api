@@ -3,7 +3,7 @@ import {
   MissingParamError,
 } from "../../errors";
 import { AccountModel, AddAccount, HttpRequest } from "./signup-protocols";
-import { badRequest, ok, serverError } from "../../helpers/http-helper";
+import { badRequest, ok, serverError } from "../../helpers/http";
 import { Validation } from "../../helpers/validators/validation";
 
 const makeFakeAccount = (): AccountModel => ({
