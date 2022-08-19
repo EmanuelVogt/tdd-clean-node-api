@@ -1,7 +1,7 @@
 import { Authentication } from "../../../domain/usecases/authentication";
 import { MissingParamError } from "../../errors";
 import { badRequest, unautorized, serverError, ok } from "../../helpers/http";
-import { Validation } from "../../helpers/validators/validation";
+import { Validation } from "../../protocols/validation";
 import { HttpRequest } from "../../protocols";
 import { LoginController } from "./login.controlller";
 
