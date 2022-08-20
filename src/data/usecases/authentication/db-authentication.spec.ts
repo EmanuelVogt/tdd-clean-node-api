@@ -1,7 +1,12 @@
-import { HashComparer, LoadAccountByEmailRepository, TokenGenerator, UpdateAccessTokenRepository } from "./db-authentication-protocols"
+import {
+  AuthenticationModel,
+  HashComparer,
+  LoadAccountByEmailRepository,
+  TokenGenerator,
+  UpdateAccessTokenRepository
+} from "./db-authentication-protocols"
 import { AccountModel } from "../add-account/db-add-account-protocols"
 import { DbAuthentication } from "./db-authentication"
-import { AuthenticationModel } from "../../../domain/usecases/authentication"
 
 const faceAccount: AccountModel = ({
   id: 'any_id',
