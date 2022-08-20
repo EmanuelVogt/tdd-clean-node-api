@@ -115,4 +115,13 @@ describe('DbAuthentication UseCase', () => {
     expect(compareSpy).not.toHaveBeenCalledWith('wrong_id')
     expect(compareSpy).toHaveBeenCalledWith('any_id')
   })
+
+  test('should throw if TokenGenerator throws', async () => {
+    const { sut, tokenGenerator } = makeSut()
+    jest.spyOn(tokenGenerator, 'generate').mockReturnValueOnce(
+      new Promise((resolve, reject) => reject(new Error))
+    )
+    const promise = sut.auth(fakeAuthentication)
+    expect(promise).rejects.toThrow()
+  })
 });
