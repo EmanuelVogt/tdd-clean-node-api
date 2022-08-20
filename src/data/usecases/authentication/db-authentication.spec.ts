@@ -124,4 +124,10 @@ describe('DbAuthentication UseCase', () => {
     const promise = sut.auth(fakeAuthentication)
     expect(promise).rejects.toThrow()
   })
+
+  test('should return null if TokenGenerator returns null', async () => {
+    const { sut } = makeSut()
+    const accessToken = await sut.auth(fakeAuthentication)
+    expect(accessToken).toBe('any_token')
+  });
 });
