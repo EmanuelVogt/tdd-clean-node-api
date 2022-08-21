@@ -19,7 +19,7 @@ const fakeAuthentication: AuthenticationModel = ({ email: 'any_email@mail.com', 
 
 const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
   class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
-    async update(token: string, id: string): Promise<void> {
+    async updateAcessToken(token: string, id: string): Promise<void> {
       return new Promise(resolve => resolve())
     }
   }
@@ -38,7 +38,7 @@ const makeEncrypter = (): Encrypter => {
 
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
-    async load(email: string): Promise<AccountModel> {
+    async loadAccountByEmail(email: string): Promise<AccountModel> {
       return new Promise(resolve => resolve(faceAccount))
     }
   }
@@ -80,14 +80,14 @@ const makeSut = (): SutTypes => {
 describe('DbAuthentication UseCase', () => {
   test('should call LoadAccountByEmailRepository with correct email', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'load')
+    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadAccountByEmail')
     await sut.auth(fakeAuthentication)
     expect(loadSpy).toHaveBeenCalledWith('any_email@mail.com')
   });
 
   test('should throw if LoadAccountByEmailRepository throws', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'load').mockReturnValueOnce(
+    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadAccountByEmail').mockReturnValueOnce(
       new Promise((resolve, reject) => reject(new Error))
     )
     const promise = sut.auth(fakeAuthentication)
@@ -96,7 +96,7 @@ describe('DbAuthentication UseCase', () => {
 
   test('should return null if LoadAccountByEmailRepository returns null', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'load').mockReturnValueOnce(null)
+    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadAccountByEmail').mockReturnValueOnce(null)
     const accessToken = await sut.auth(fakeAuthentication)
     expect(accessToken).toBe(null)
   });
@@ -145,14 +145,14 @@ describe('DbAuthentication UseCase', () => {
 
   test('should call UpdateAccessTokenRepository with correct values', async () => {
     const { sut, updateAccessTokenRepositoryStub } = makeSut()
-    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'update')
+    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'updateAcessToken')
     await sut.auth(fakeAuthentication)
     expect(updateSpy).toHaveBeenCalledWith('any_token', 'any_id')
   });
 
   test('should throw if UpdateAccessTokenRepository throws', async () => {
     const { sut, updateAccessTokenRepositoryStub } = makeSut()
-    jest.spyOn(updateAccessTokenRepositoryStub, 'update').mockReturnValueOnce(
+    jest.spyOn(updateAccessTokenRepositoryStub, 'updateAcessToken').mockReturnValueOnce(
       new Promise((resolve, reject) => reject(new Error))
     )
     const promise = sut.auth(fakeAuthentication)
