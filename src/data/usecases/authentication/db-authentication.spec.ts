@@ -19,7 +19,7 @@ const fakeAuthentication: AuthenticationModel = ({ email: 'any_email@mail.com', 
 
 const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
   class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
-    async updateAcessToken(token: string, id: string): Promise<void> {
+    async updateAccessToken(token: string, id: string): Promise<void> {
       return new Promise(resolve => resolve())
     }
   }
@@ -145,14 +145,14 @@ describe('DbAuthentication UseCase', () => {
 
   test('should call UpdateAccessTokenRepository with correct values', async () => {
     const { sut, updateAccessTokenRepositoryStub } = makeSut()
-    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'updateAcessToken')
+    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken')
     await sut.auth(fakeAuthentication)
     expect(updateSpy).toHaveBeenCalledWith('any_token', 'any_id')
   });
 
   test('should throw if UpdateAccessTokenRepository throws', async () => {
     const { sut, updateAccessTokenRepositoryStub } = makeSut()
-    jest.spyOn(updateAccessTokenRepositoryStub, 'updateAcessToken').mockReturnValueOnce(
+    jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken').mockReturnValueOnce(
       new Promise((resolve, reject) => reject(new Error))
     )
     const promise = sut.auth(fakeAuthentication)
