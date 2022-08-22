@@ -24,7 +24,7 @@ describe('JWT Adapter', () => {
     const { sut } = makeSut()
     const signSpy = jest.spyOn(jwt, "sign")
     await sut.encrypt('any_id')
-    expect(signSpy).toHaveBeenCalledWith("any_id", "any_secret")
+    expect(signSpy).toHaveBeenCalledWith({"id": "any_id"}, "any_secret", {"expiresIn": 10000000000})
   });
 
   test('should return a token on sign success', async () => {
