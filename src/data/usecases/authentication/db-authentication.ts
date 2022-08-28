@@ -9,14 +9,14 @@ import {
 
 export class DbAuthentication implements Authentication {
   constructor(
-    private readonly loacAccountByEmailRepository: LoadAccountByEmailRepository,
+    private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
     private readonly hashComparer: HashComparer,
     private readonly encrypter: Encrypter,
     private readonly updateAccessTokenRepository: UpdateAccessTokenRepository,
   ) { }
 
   async auth({ email, password }: AuthenticationModel): Promise<string> {
-    const account = await this.loacAccountByEmailRepository.loadAccountByEmail(email)
+    const account = await this.loadAccountByEmailRepository.loadAccountByEmail(email)
     if (account) {
       const isValid = await this.hashComparer.compare(password, account.password)
       if (isValid) {
