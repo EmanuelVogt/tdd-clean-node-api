@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "start": "node dist/main/server.js",
-    "dev": "sucrase-node src/main/server.ts",
+    "up": "npm run build && docker-compose up -d",
+    "down": "docker-compose down",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:v": "jest --watch",
     "test:staged": "yarn test -- -- indRelatedTest --runInBand",
@@ -14,8 +15,7 @@
     "test:integration": "yarn test -- --watch -c jest-integration-config.js",
     "test:ci": "yarn test -- --coverage",
     "lint": "eslint ./src ./test --ext .ts",
-    "lint:fix": "eslint ./src --ext .ts --fix",
-    "prepare": "husky install"
+    "lint:fix": "eslint ./src --ext .ts --fix"
   },
   "keywords": [],
   "author": "",
@@ -38,7 +38,6 @@
     "jest": "^28.1.3",
     "lint-staged": "^13.0.3",
     "rimraf": "^3.0.2",
-    "sucrase": "^3.25.0",
     "supertest": "^6.2.4",
     "ts-jest": "^28.0.7",
     "typescript": "^4.7.4"

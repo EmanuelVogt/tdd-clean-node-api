@@ -3,11 +3,13 @@ import request from "supertest";
 import { MongoHelper } from "../../infra/db/mongodb/helpers/mongo-helper";
 import app from "../config/app";
 import bcrypt from 'bcrypt'
+import env from '../config/env'
+
 let accountCollection: Collection
 
 describe("Account routes", () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL);
+    await MongoHelper.connect(env.mongoUrl);
   });
 
   afterAll(async () => {
