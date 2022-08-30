@@ -11,6 +11,7 @@ const makeFakeAccount = (): AccountModel => ({
   name: "valid_name",
   email: "valid@email.com",
   password: "valid_password",
+  accessToken: "any_token"
 })
 
 const makeAddAccount = (): AddAccount => {
@@ -124,4 +125,13 @@ describe("signup controller", () => {
     await sut.handle(httpRequest)
     expect(authSpy).toHaveBeenCalledWith({ "email": "any_email@email.com", "password": "any_password" });
   });
+
+  test('should return 500 if Authentication throws', async () => {
+    const { sut, authenticationStub, httpRequest } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(async () => {
+      return new Promise((resolve, reject) => reject(new Error()))
+    })
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(serverError(new Error()))
+  })
 });
