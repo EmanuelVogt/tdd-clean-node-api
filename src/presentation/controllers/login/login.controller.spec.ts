@@ -80,7 +80,7 @@ describe('login controller', () => {
     expect(httpResponse).toEqual(serverError(new Error()))
   })
 
-  test('should return 500 if Authentication throws', async () => {
+  test('should return 200 if Authentication succeed', async () => {
     const { sut, httpRequest } = makeSut()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(ok({ accessToken: "any_token" }))
