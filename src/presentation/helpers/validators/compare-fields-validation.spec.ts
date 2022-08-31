@@ -1,5 +1,5 @@
-import { InvalidParamError } from "../../errors";
-import { CompareFieldsValidation } from "./compare-fields-validation";
+import { InvalidParamError } from '../../errors'
+import { CompareFieldsValidation } from './compare-fields-validation'
 
 interface SutTypes {
   sut: CompareFieldsValidation
@@ -23,4 +23,4 @@ describe('CompareFieldsValidation', () => {
     const error = sut.validate({ field: 'field', field_two: 'field' })
     expect(error).toBeFalsy()
   })
-});
+})

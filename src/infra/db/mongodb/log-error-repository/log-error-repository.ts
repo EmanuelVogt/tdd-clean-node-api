@@ -1,9 +1,9 @@
-import { LogErrorRepository } from "../../../../data/protocols/db/log-error-repository";
-import { MongoHelper } from "../helpers/mongo-helper";
+import { LogErrorRepository } from '../../../../data/protocols/db/log-error-repository'
+import { MongoHelper } from '../helpers/mongo-helper'
 
 export class LogErrorMongoRepository implements LogErrorRepository {
-  async logError(stack: string): Promise<void> {
+  async logError (stack: string): Promise<void> {
     const errorCollection = await MongoHelper.getCollection('errors')
-    errorCollection.insertOne({ stack, date: new Date() })
+    void errorCollection.insertOne({ stack, date: new Date() })
   }
 }

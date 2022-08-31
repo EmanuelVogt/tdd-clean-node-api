@@ -6,5 +6,4 @@
     "esModuleInterop": true
   },
   "include": ["src"],
-  "exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }

@@ -1,5 +1,5 @@
-import { MissingParamError } from "../../errors";
-import { RequiredFieldValidation } from "./required-fields-validation";
+import { MissingParamError } from '../../errors'
+import { RequiredFieldValidation } from './required-fields-validation'
 
 interface SutTypes {
   sut: RequiredFieldValidation
@@ -23,4 +23,4 @@ describe('Required FieldValidation', () => {
     const error = sut.validate({ field: 'field' })
     expect(error).toBeFalsy()
   })
-});
+})

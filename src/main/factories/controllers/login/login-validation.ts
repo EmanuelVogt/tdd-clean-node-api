@@ -11,8 +11,8 @@ export const makeLoginValidationFactory = (): ValidationComposite => {
   const validations: Validation[] = []
 
   const requiredFields = [
-    "email",
-    "password",
+    'email',
+    'password'
   ]
   for (const field of requiredFields) {
     validations.push(new RequiredFieldValidation(field))

@@ -1,23 +1,23 @@
-import { Validation } from '../../../../presentation/protocols/validation';
-import { EmailValidator } from '../../../../presentation/protocols';
+import { Validation } from '../../../../presentation/protocols/validation'
+import { EmailValidator } from '../../../../presentation/protocols'
 import { makeSignupValidationFactory } from './signup-validation'
 import {
   CompareFieldsValidation,
   EmailValidation,
   RequiredFieldValidation,
   ValidationComposite
-} from '../../../../presentation/helpers/validators';
+} from '../../../../presentation/helpers/validators'
 
-jest.mock("../../../../presentation/helpers/validators/validation-composite")
+jest.mock('../../../../presentation/helpers/validators/validation-composite')
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
-    ensureIsValid(): boolean {
-      return true;
+    ensureIsValid (): boolean {
+      return true
     }
   }
-  return new EmailValidatorStub();
-};
+  return new EmailValidatorStub()
+}
 
 describe('SignupValidation Factory', () => {
   test('should call ValidationComposite with all validation fields', () => {
@@ -25,10 +25,10 @@ describe('SignupValidation Factory', () => {
     const validations: Validation[] = []
 
     const requiredFields = [
-      "email",
-      "name",
-      "password",
-      "passwordConfirmation"
+      'email',
+      'name',
+      'password',
+      'passwordConfirmation'
     ]
     for (const field of requiredFields) {
       validations.push(new RequiredFieldValidation(field))
@@ -37,5 +37,5 @@ describe('SignupValidation Factory', () => {
     validations.push(new EmailValidation('email', makeEmailValidator()))
 
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
-  });
-});
+  })
+})

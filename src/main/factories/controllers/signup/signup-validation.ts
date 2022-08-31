@@ -12,10 +12,10 @@ export const makeSignupValidationFactory = (): ValidationComposite => {
   const validations: Validation[] = []
 
   const requiredFields = [
-    "email",
-    "name",
-    "password",
-    "passwordConfirmation"
+    'email',
+    'name',
+    'password',
+    'passwordConfirmation'
   ]
   for (const field of requiredFields) {
     validations.push(new RequiredFieldValidation(field))
