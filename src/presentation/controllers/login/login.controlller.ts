@@ -2,7 +2,7 @@ import { unautorized, ok, serverError, badRequest } from "../../helpers/http";
 import { Authentication, Controller, HttpRequest, HttpResponse, Validation } from './login-protocols'
 
 export class LoginController implements Controller {
-
+  
   constructor(
     private readonly authentication: Authentication,
     private readonly validation: Validation
