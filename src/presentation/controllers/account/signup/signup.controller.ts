@@ -6,9 +6,9 @@ import {
   Authentication
 } from './signup-protocols'
 
-import { badRequest, forbiden, ok, serverError } from '../../helpers/http'
-import { Validation } from '../../protocols/validation'
-import { ForbidenError } from '../../errors/forbiden-error'
+import { badRequest, forbiden, ok, serverError } from '../../../helpers/http'
+import { Validation } from '../../../protocols/validation'
+import { ForbidenError } from '../../../errors/forbiden-error'
 
 export class SignUpController implements Controller {
   constructor (

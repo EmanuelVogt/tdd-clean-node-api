@@ -1,5 +1,5 @@
 
-import { LoginController } from '../../../../presentation/controllers/login/login.controlller'
+import { LoginController } from '../../../../presentation/controllers/account/login/login.controlller'
 import { Controller } from '../../../../presentation/protocols'
 import { makeLoginValidationFactory } from './login-validation'
 import { makeDbAuthentication } from '../../usecases/db-authentication-factory'
