@@ -13,7 +13,7 @@ export class AddSurveyController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      await this.createSurvey.create(httpRequest.body)
+      await this.createSurvey.add(httpRequest.body)
 
       return noContent()
     } catch (error) {

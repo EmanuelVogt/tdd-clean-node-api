@@ -8,13 +8,13 @@ interface SutTypes {
   createSurveyStub: AddSurvey
 }
 const makeCreateSurvey = (): AddSurvey => {
-  class CreateSurveyStub implements AddSurvey {
-    async create (surveyData: AddSurveyModel): Promise<void> {
+  class AddSurveyStub implements AddSurvey {
+    async add (surveyData: AddSurveyModel): Promise<void> {
       return await new Promise(resolve => resolve())
     }
   }
 
-  return new CreateSurveyStub()
+  return new AddSurveyStub()
 }
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
@@ -67,7 +67,7 @@ describe('AddSurvey controller', () => {
 
   test('should call CreateSurvey with correct value', async () => {
     const { sut, createSurveyStub } = makeSut()
-    const spy = jest.spyOn(createSurveyStub, 'create')
+    const spy = jest.spyOn(createSurveyStub, 'add')
     await sut.handle(makeHttpRequest())
     void expect(spy).toHaveBeenCalledWith(
       { answers: [{ answer: 'any_answer', image: 'any_image' }], question: 'any_question' }
@@ -77,7 +77,7 @@ describe('AddSurvey controller', () => {
 
   test('should return 500 if Authentication throws', async () => {
     const { sut, createSurveyStub } = makeSut()
-    jest.spyOn(createSurveyStub, 'create')
+    jest.spyOn(createSurveyStub, 'add')
       .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const httpResponse = await sut.handle(makeHttpRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
