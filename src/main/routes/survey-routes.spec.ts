@@ -36,7 +36,7 @@ describe('Account routes', () => {
           }
           ]
         })
-        .expect(200)
+        .expect(204)
     })
   })
 })
