@@ -1,5 +1,15 @@
+import { AccountModel } from '../add-account/db-add-account-protocols'
 import { DbLoadAccountByToken } from './db-load-account-by-token'
-import { Decrypter } from './db-load-accoynt-by-token-protocols'
+import { Decrypter, LoadAccountByTokenRepository } from './db-load-accoynt-by-token-protocols'
+
+const makeLoadAccountByTokenRepository = (): LoadAccountByTokenRepository => {
+  class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
+    async loadAccountByToken (accessToken: string, role?: string): Promise<AccountModel> {
+      return await new Promise(resolve => resolve(null))
+    }
+  }
+  return new LoadAccountByTokenRepositoryStub()
+}
 
 const makeDecrypter = (): Decrypter => {
   class DecrypterStub implements Decrypter {
@@ -13,12 +23,14 @@ const makeDecrypter = (): Decrypter => {
 interface SutTypes {
   sut: DbLoadAccountByToken
   decrypterStub: Decrypter
+  loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository
 }
 
 const makeSut = (): SutTypes => {
+  const loadAccountByTokenRepositoryStub = makeLoadAccountByTokenRepository()
   const decrypterStub = makeDecrypter()
-  const sut = new DbLoadAccountByToken(decrypterStub)
-  return { sut, decrypterStub }
+  const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub)
+  return { sut, decrypterStub, loadAccountByTokenRepositoryStub }
 }
 
 describe('DbLoadAccountByToken UseCase', () => {
@@ -35,5 +47,12 @@ describe('DbLoadAccountByToken UseCase', () => {
       .mockReturnValueOnce(new Promise(resolve => resolve(null)))
     const account = await sut.load('any_token', 'any_role')
     expect(account).toBeNull()
+  })
+
+  test('should call LoadAccountByTokenRepository with correct values', async () => {
+    const { sut, loadAccountByTokenRepositoryStub } = makeSut()
+    const spy = jest.spyOn(loadAccountByTokenRepositoryStub, 'loadAccountByToken')
+    await sut.load('any_token', 'any_role')
+    expect(spy).toHaveBeenCalledWith('any_token', 'any_role')
   })
 })
