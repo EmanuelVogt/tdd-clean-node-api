@@ -11,7 +11,7 @@ const makeFakeSurvey = (): AddSurveyModel => (
 
 const makeAddSurveyRepository = (): AddSurveyRepository => {
   class AddSurveyRepositoryStub implements AddSurveyRepository {
-    async create (values: AddSurveyModel): Promise<void> {
+    async add (values: AddSurveyModel): Promise<void> {
       return await new Promise((resolve) => resolve())
     }
   }
@@ -35,8 +35,8 @@ const makeSut = (): SutTypes => {
 describe('DbAddSurvey', () => {
   test('should call AddSurveyRepository with correct values', async () => {
     const { sut, addSurveyRepository } = makeSut()
-    const spy = jest.spyOn(addSurveyRepository, 'create')
-    await sut.create(makeFakeSurvey())
+    const spy = jest.spyOn(addSurveyRepository, 'add')
+    await sut.add(makeFakeSurvey())
     void expect(spy).toHaveBeenCalledWith({
       question: 'any_question',
       answers: [{ image: 'any_image', answer: 'any_answer' }]
@@ -47,11 +47,11 @@ describe('DbAddSurvey', () => {
   test('should throw if AddSurveyRepository throws', () => {
     const { sut, addSurveyRepository } = makeSut()
     jest
-      .spyOn(addSurveyRepository, 'create')
+      .spyOn(addSurveyRepository, 'add')
       .mockReturnValueOnce(
         new Promise((resolve, reject) => reject(new Error()))
       )
-    const promise = sut.create(makeFakeSurvey())
+    const promise = sut.add(makeFakeSurvey())
     void expect(promise).rejects.toThrow()
   })
 })
