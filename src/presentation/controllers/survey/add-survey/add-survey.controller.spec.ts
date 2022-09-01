@@ -1,15 +1,15 @@
-import { CreateSurvey, CreateSurveyModel, HttpRequest, Validation } from './add-survey-protocols'
+import { AddSurvey, AddSurveyModel, HttpRequest, Validation } from './add-survey-protocols'
 import { AddSurveyController } from './add-survey-controller'
 import { badRequest, noContent, serverError } from '../../../helpers/http'
 
 interface SutTypes {
   sut: AddSurveyController
   validationStub: Validation
-  createSurveyStub: CreateSurvey
+  createSurveyStub: AddSurvey
 }
-const makeCreateSurvey = (): CreateSurvey => {
-  class CreateSurveyStub implements CreateSurvey {
-    async create (surveyData: CreateSurveyModel): Promise<void> {
+const makeCreateSurvey = (): AddSurvey => {
+  class CreateSurveyStub implements AddSurvey {
+    async create (surveyData: AddSurveyModel): Promise<void> {
       return await new Promise(resolve => resolve())
     }
   }
