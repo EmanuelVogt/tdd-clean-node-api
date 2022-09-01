@@ -6,7 +6,7 @@ import {
   Authentication
 } from './signup-protocols'
 
-import { badRequest, forbiden, ok, serverError } from '../../../helpers/http'
+import { badRequest, forbidden, ok, serverError } from '../../../helpers/http'
 import { Validation } from '../../../protocols/validation'
 import { ForbidenError } from '../../../errors/forbiden-error'
 
@@ -26,7 +26,7 @@ export class SignUpController implements Controller {
       const { name, email, password } = httpRequest.body
       const account = await this.addAccount.create({ email, name, password })
       if (!account) {
-        return forbiden(new ForbidenError())
+        return forbidden(new ForbidenError())
       }
       const accessToken = await this.authentication.auth({ email, password })
       const dataToSend = { ...account, accessToken }
