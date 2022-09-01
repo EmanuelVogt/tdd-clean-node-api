@@ -1,5 +1,5 @@
 import { AccessDenied } from '../errors'
-import { forbiden } from '../helpers/http'
+import { forbiden, ok } from '../helpers/http'
 
 import { AuthMiddleware } from './auth-middleware'
 import { LoadAccountByToken, HttpRequest, AccountModel } from './auth-middleware-ptrotocols'
@@ -7,15 +7,6 @@ import { LoadAccountByToken, HttpRequest, AccountModel } from './auth-middleware
 interface SutTypes {
   sut: AuthMiddleware
   loadAccountByTokenStub: LoadAccountByToken
-}
-const makeLoadAccountByToken = (): LoadAccountByToken => {
-  class LoadAccountByTokenStub implements LoadAccountByToken {
-    async load (token: string, role?: string): Promise<AccountModel> {
-      return await new Promise(resolve => resolve(null))
-    }
-  }
-
-  return new LoadAccountByTokenStub()
 }
 
 const makeFakeHttpRequest = (): HttpRequest => {
@@ -25,6 +16,24 @@ const makeFakeHttpRequest = (): HttpRequest => {
     }
   }
 }
+
+const makeFakeAccount = (): AccountModel => ({
+  id: 'valid_id',
+  name: 'valid_name',
+  email: 'any_email@mail.com',
+  password: 'hashed_password'
+})
+
+const makeLoadAccountByToken = (): LoadAccountByToken => {
+  class LoadAccountByTokenStub implements LoadAccountByToken {
+    async load (token: string, role?: string): Promise<AccountModel> {
+      return await new Promise(resolve => resolve(makeFakeAccount()))
+    }
+  }
+
+  return new LoadAccountByTokenStub()
+}
+
 const makeSut = (): SutTypes => {
   const loadAccountByTokenStub = makeLoadAccountByToken()
   const sut = new AuthMiddleware(loadAccountByTokenStub)
@@ -33,7 +42,7 @@ const makeSut = (): SutTypes => {
 describe('Auth Middleware', () => {
   test('should return 403 if no x-access-token exists in headers', async () => {
     const { sut } = makeSut()
-    const httpResponse = await sut.handle(makeFakeHttpRequest())
+    const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(forbiden(new AccessDenied()))
   })
 
@@ -50,5 +59,11 @@ describe('Auth Middleware', () => {
       .mockReturnValueOnce(new Promise(resolve => resolve(null)))
     const httpResponse = await sut.handle(makeFakeHttpRequest())
     expect(httpResponse).toEqual(forbiden(new AccessDenied()))
+  })
+
+  test('should return 200 if LoadAccountByToken return an account', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeHttpRequest())
+    expect(httpResponse).toEqual(ok({ accountId: makeFakeAccount().id }))
   })
 })
