@@ -1,4 +1,4 @@
-import { LogErrorMongoRepository } from '../../../infra/db/mongodb/log-error-repository/log-error-repository'
+import { LogErrorMongoRepository } from '../../../infra/db/mongodb/repositories/log-error-repository/log-error-repository'
 import { Controller } from '../../../presentation/protocols'
 import { LogErrorControllers } from '../../decorators/log-error'
 
