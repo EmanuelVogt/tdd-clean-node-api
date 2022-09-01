@@ -1,10 +1,10 @@
 import { badRequest, noContent, serverError } from '../../../helpers/http'
-import { Controller, CreateSurvey, HttpRequest, HttpResponse, Validation } from './add-survey-protocols'
+import { Controller, AddSurvey, HttpRequest, HttpResponse, Validation } from './add-survey-protocols'
 
 export class AddSurveyController implements Controller {
   constructor (
     private readonly validation: Validation,
-    private readonly createSurvey: CreateSurvey
+    private readonly createSurvey: AddSurvey
   ) { }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
