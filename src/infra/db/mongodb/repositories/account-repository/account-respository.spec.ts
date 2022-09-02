@@ -9,7 +9,8 @@ const fakeAccount =
   name: 'any_name',
   email: 'any_email@mail.com',
   password: 'any_password',
-  accessToken: 'any_token'
+  accessToken: 'any_token',
+  role: 'any_role'
 }
 
 interface SutTypes {
@@ -80,5 +81,19 @@ describe('Account Mongo Repository', () => {
     expect(account.email).toBe('any_email@mail.com')
     expect(account.password).toBe('any_password')
     expect(account.accessToken).toBe('any_token')
+    expect(account.role).toBe('any_role')
+  })
+
+  test('should return an account on loadAccountByToken with role', async () => {
+    const { sut } = makeSut()
+    await accountCollection.insertOne(fakeAccount)
+    const account = await sut.loadAccountByToken('any_token', 'any_role')
+    expect(account).toBeTruthy()
+    expect(account.id).toBeTruthy()
+    expect(account.name).toBe('any_name')
+    expect(account.email).toBe('any_email@mail.com')
+    expect(account.password).toBe('any_password')
+    expect(account.accessToken).toBe('any_token')
+    expect(account.role).toBe('any_role')
   })
 })
