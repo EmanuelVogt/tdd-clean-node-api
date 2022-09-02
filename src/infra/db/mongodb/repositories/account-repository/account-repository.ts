@@ -15,13 +15,16 @@ export class AccountMongoRepository implements
   LoadAccountByTokenRepository {
   async loadAccountByToken (accessToken: string, role?: string): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
-    const result = await accountCollection.findOne({ accessToken, role })
+    const query = { accessToken }
+    role && Object.assign(query, { role })
+    const result = await accountCollection.findOne(query)
     return result && {
       email: result.email,
       id: result._id,
       name: result.name,
       password: result.password,
-      accessToken: result.accessToken
+      accessToken: result.accessToken,
+      role: result.role
     }
   }
 
