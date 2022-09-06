@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "start": "node dist/main/server.js",
-    "up": "npm run build && docker-compose up -d",
+    "up": "npm run build && docker-compose up",
     "down": "docker-compose down",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:v": "jest --watch",

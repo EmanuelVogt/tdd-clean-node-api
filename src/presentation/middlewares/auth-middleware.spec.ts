@@ -1,5 +1,5 @@
 import { AccessDenied } from '../errors'
-import { forbidden, ok, serverError } from '../helpers/http'
+import { forbidden, ok } from '../helpers/http'
 
 import { AuthMiddleware } from './auth-middleware'
 import { LoadAccountByToken, HttpRequest, AccountModel } from './auth-middleware-ptrotocols'
@@ -73,6 +73,6 @@ describe('Auth Middleware', () => {
     jest.spyOn(loadAccountByTokenStub, 'load')
       .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const httpResponse = await sut.handle(makeFakeHttpRequest())
-    expect(httpResponse).toEqual(serverError(new Error()))
+    expect(httpResponse).toEqual(forbidden(new Error()))
   })
 })
