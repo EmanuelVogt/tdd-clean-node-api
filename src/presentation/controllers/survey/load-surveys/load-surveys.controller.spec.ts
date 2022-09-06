@@ -5,7 +5,6 @@ import { noContent, ok, serverError } from '../../../helpers/http'
 
 const makeFakeSurveys = (): SurveyModel[] => {
   return [
-
     {
       id: 'any_id',
       question: 'any_question',
