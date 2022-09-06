@@ -1,5 +1,5 @@
 import { AccessDenied } from '../errors'
-import { forbidden, ok, serverError } from '../helpers/http'
+import { forbidden, ok } from '../helpers/http'
 import { HttpRequest, HttpResponse, LoadAccountByToken, Middleware } from './auth-middleware-ptrotocols'
 
 export class AuthMiddleware implements Middleware {
@@ -19,7 +19,7 @@ export class AuthMiddleware implements Middleware {
       }
       return forbidden(new AccessDenied())
     } catch (error) {
-      return serverError(error)
+      return forbidden(error)
     }
   }
 }
