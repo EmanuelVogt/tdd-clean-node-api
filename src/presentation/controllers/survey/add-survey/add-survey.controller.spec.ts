@@ -1,12 +1,14 @@
 import { AddSurvey, AddSurveyModel, HttpRequest, Validation } from './add-survey-protocols'
 import { AddSurveyController } from './add-survey-controller'
 import { badRequest, noContent, serverError } from '../../../helpers/http'
+import MockDate from 'mockdate'
 
 interface SutTypes {
   sut: AddSurveyController
   validationStub: Validation
   createSurveyStub: AddSurvey
 }
+
 const makeCreateSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
     async add (surveyData: AddSurveyModel): Promise<void> {
@@ -16,6 +18,7 @@ const makeCreateSurvey = (): AddSurvey => {
 
   return new AddSurveyStub()
 }
+
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
     validate (input: any): Error {
@@ -32,10 +35,12 @@ const makeHttpRequest = (): HttpRequest => {
       answers: [{
         image: 'any_image',
         answer: 'any_answer'
-      }]
+      }],
+      date: new Date()
     }
   }
 }
+
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
   const createSurveyStub = makeCreateSurvey()
@@ -48,12 +53,20 @@ const makeSut = (): SutTypes => {
 }
 
 describe('AddSurvey controller', () => {
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
+
   test('should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const spy = jest.spyOn(validationStub, 'validate')
     await sut.handle(makeHttpRequest())
     void expect(spy).toHaveBeenCalledWith(
-      { answers: [{ answer: 'any_answer', image: 'any_image' }], question: 'any_question' }
+      { answers: [{ answer: 'any_answer', image: 'any_image' }], question: 'any_question', date: new Date() }
     )
     void expect(spy).not.toHaveBeenCalledWith({})
   })
@@ -70,7 +83,7 @@ describe('AddSurvey controller', () => {
     const spy = jest.spyOn(createSurveyStub, 'add')
     await sut.handle(makeHttpRequest())
     void expect(spy).toHaveBeenCalledWith(
-      { answers: [{ answer: 'any_answer', image: 'any_image' }], question: 'any_question' }
+      { answers: [{ answer: 'any_answer', image: 'any_image' }], question: 'any_question', date: new Date() }
     )
     void expect(spy).not.toHaveBeenCalledWith({})
   })

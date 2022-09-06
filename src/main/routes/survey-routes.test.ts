@@ -62,7 +62,7 @@ describe('Account routes', () => {
 
       await request(app)
         .post('/api/surveys')
-        .set('x-access-token', 'asaddas')
+        .set('x-access-token', accessToken)
         .send({
           question: 'any_question',
           answers: [{
