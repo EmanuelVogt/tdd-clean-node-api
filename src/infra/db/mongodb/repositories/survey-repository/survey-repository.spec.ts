@@ -64,5 +64,11 @@ describe('SurveyMongoRepository', () => {
       const result = await sut.load()
       void expect(result.length).toBe(2)
     })
+
+    test('should return all survey on success', async () => {
+      const { sut } = makeSut()
+      const result = await sut.load()
+      void expect(result.length).toBe(0)
+    })
   })
 })
