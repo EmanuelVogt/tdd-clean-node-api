@@ -2,7 +2,7 @@
 import { Router } from 'express'
 import { expressAdapterMiddleware } from '../adapter/express/express-middleware-adapter'
 import { adapterRoute } from '../adapter/express/express-route-adapter'
-import { makeAddSurveyController } from '../factories/controllers/surveys/add-survey-controller/add-survey-controller-factory'
+import { makeAddSurveyController } from '../factories/controllers/surveys/add-survey-controller-factory'
 import { makeLogErrorControllerFactory } from '../factories/decorators/log-error-controller-decorator-factory'
 import { makeAuthMiddleware } from '../factories/middlewares/auth-middleware-factory'
 
