@@ -1,7 +1,7 @@
 import { Collection } from 'mongodb'
-import { MongoHelper } from '../../helpers/mongo-helper'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 
-import env from '../../../../../main/config/env'
+import env from '@/main/config/env'
 import { AddSurveyModel } from './survey-protocols'
 import { SurveyMongoRepository } from './survey-repository'
 

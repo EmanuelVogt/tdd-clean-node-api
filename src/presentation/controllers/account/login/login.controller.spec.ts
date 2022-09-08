@@ -4,8 +4,8 @@ import {
   HttpRequest,
   Validation
 } from './login-protocols'
-import { MissingParamError } from '../../../errors'
-import { badRequest, unautorized, serverError, ok } from '../../../helpers/http'
+import { MissingParamError } from '@/presentation/errors'
+import { badRequest, unautorized, serverError, ok } from '@/presentation/helpers/http'
 import { LoginController } from './login.controlller'
 
 const makeValidation = (): Validation => {

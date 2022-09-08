@@ -4,8 +4,8 @@ import {
   ForbidenError
 } from '../../../errors'
 import { AccountModel, AddAccount, Authentication, AuthenticationModel, HttpRequest } from './signup-protocols'
-import { badRequest, ok, serverError, forbidden } from '../../../helpers/http'
-import { Validation } from '../../../protocols/validation'
+import { badRequest, ok, serverError, forbidden } from '@/presentation/helpers/http'
+import { Validation } from '@/presentation/protocols/validation'
 
 const makeFakeAccount = (): AccountModel => ({
   id: 'valid_id',

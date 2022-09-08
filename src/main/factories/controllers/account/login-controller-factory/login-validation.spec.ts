@@ -1,11 +1,11 @@
-import { Validation } from '../../../../../presentation/protocols/validation'
-import { EmailValidator } from '../../../../../presentation/protocols'
+import { Validation } from '@/presentation/protocols/validation'
+import { EmailValidator } from '@/presentation/protocols'
 import { makeLoginValidationFactory } from './login-validation'
 import {
   EmailValidation,
   RequiredFieldValidation,
   ValidationComposite
-} from '../../../../../validation/validators'
+} from '@/validation/validators'
 
 jest.mock('../../../../../validation/validators/validation-composite')
 

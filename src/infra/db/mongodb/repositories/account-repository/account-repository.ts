@@ -5,8 +5,8 @@ import {
   LoadAccountByEmailRepository,
   UpdateAccessTokenRepository
 } from './account-protocols'
-import { MongoHelper } from '../../helpers/mongo-helper'
-import { LoadAccountByTokenRepository } from '../../../../../data/protocols/db/load-account-by-token-repository'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { LoadAccountByTokenRepository } from '@/data/protocols/db/load-account-by-token-repository'
 
 export class AccountMongoRepository implements
   AddAccountRepository,
