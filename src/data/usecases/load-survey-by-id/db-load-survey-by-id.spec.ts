@@ -65,4 +65,15 @@ describe('DbAddSurveyById', () => {
       date: new Date()
     })
   })
+
+  test('should throw if LoadSurveyRepository throws', () => {
+    const { sut, loadSurveyByIdRespositoryStub } = makeSut()
+    jest
+      .spyOn(loadSurveyByIdRespositoryStub, 'loadById')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error()))
+      )
+    const promise = sut.loadById('any_id')
+    void expect(promise).rejects.toThrow()
+  })
 })
