@@ -4,7 +4,7 @@ import { forbidden, ok } from '../helpers/http'
 import { AuthMiddleware } from './auth-middleware'
 import { LoadAccountByToken, HttpRequest, AccountModel } from './auth-middleware-ptrotocols'
 
-interface SutTypes {
+type SutTypes = {
   sut: AuthMiddleware
   loadAccountByTokenStub: LoadAccountByToken
 }

@@ -1,7 +1,7 @@
 import { InvalidParamError } from '@/presentation/errors'
 import { CompareFieldsValidation } from './compare-fields-validation'
 
-interface SutTypes {
+type SutTypes = {
   sut: CompareFieldsValidation
 }
 const makeSut = (): SutTypes => {

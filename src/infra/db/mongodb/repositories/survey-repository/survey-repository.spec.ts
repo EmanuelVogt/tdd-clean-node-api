@@ -15,7 +15,7 @@ const makeFakeSurvey = (): AddSurveyModel => (
   }
 )
 
-interface SutTypes {
+type SutTypes = {
   sut: SurveyMongoRepository
 }
 

@@ -27,7 +27,7 @@ const makeAuthentication = (): Authentication => {
   return new AuthenticationStub()
 }
 
-interface SutTypes {
+type SutTypes = {
   fakeError: Error
   httpRequest: HttpRequest
   sut: LoginController

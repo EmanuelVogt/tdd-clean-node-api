@@ -13,7 +13,7 @@ const fakeAccount =
   role: 'admin'
 }
 
-interface SutTypes {
+type SutTypes = {
   sut: AccountMongoRepository
 }
 const makeSut = (): SutTypes => {

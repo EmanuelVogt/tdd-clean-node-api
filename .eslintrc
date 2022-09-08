@@ -20,7 +20,8 @@
       }
     ],
     "@typescript-eslint/no-unnecessary-type-assertion": 2,
-    "@typescript-eslint/strict-boolean-expressions": 0
+    "@typescript-eslint/strict-boolean-expressions": 0,
+    "@typescript-eslint/consistent-type-definitions": 0
   },
   "settings": {
     "import/resolver": {

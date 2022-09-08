@@ -5,7 +5,7 @@ import { ok, serverError } from '@/presentation/helpers/http'
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { LogErrorControllers } from './log-error'
 
-interface SutTypes {
+type SutTypes = {
   sut: LogErrorControllers
   controllerStub: Controller
   logErrorRepositoryStub: LogErrorRepository
