@@ -50,4 +50,19 @@ describe('DbAddSurveyById', () => {
     await sut.loadById('any_id')
     void expect(spy).toHaveBeenCalledWith('any_id')
   })
+
+  test('should LoadSurveyByIdRepository returns an survey if succeeds', async () => {
+    const { sut, loadSurveyByIdRespositoryStub } = makeSut()
+    jest.spyOn(loadSurveyByIdRespositoryStub, 'loadById')
+    const response = await sut.loadById('any_id')
+    void expect(response).toEqual({
+      id: 'any_id',
+      question: 'any_question',
+      answers: [{
+        image: 'any_image',
+        answer: 'any_answer'
+      }],
+      date: new Date()
+    })
+  })
 })
