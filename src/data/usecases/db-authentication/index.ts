@@ -5,7 +5,7 @@ import {
   LoadAccountByEmailRepository,
   Encrypter,
   UpdateAccessTokenRepository
-} from './db-authentication-protocols'
+} from './protocols'
 
 export class DbAuthentication implements Authentication {
   constructor (

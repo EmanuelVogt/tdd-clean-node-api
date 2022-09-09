@@ -1,6 +1,6 @@
 
 import MockDate from 'mockdate'
-import { DbLoadSurvey } from './db-load-survey'
+import { DbLoadSurveys } from '.'
 import { LoadSurveyRepository, SurveyModel } from './protocols'
 
 const makeFakeSurveys = (): SurveyModel[] => {
@@ -47,11 +47,11 @@ const makeLoadSurveyRepository = (): LoadSurveyRepository => {
 
 type SutTypes = {
   loadSurveyRespositoryStub: LoadSurveyRepository
-  sut: DbLoadSurvey
+  sut: DbLoadSurveys
 }
 const makeSut = (): SutTypes => {
   const loadSurveyRespositoryStub = makeLoadSurveyRepository()
-  const sut = new DbLoadSurvey(loadSurveyRespositoryStub)
+  const sut = new DbLoadSurveys(loadSurveyRespositoryStub)
 
   return {
     sut,
