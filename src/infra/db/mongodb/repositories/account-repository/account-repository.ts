@@ -8,6 +8,7 @@ import {
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { LoadAccountByTokenRepository } from '@/data/protocols/db/load-account-by-token-repository'
 import { LoadAccountByIdRepository } from '@/data/protocols/db/load-account-by-id-repository'
+import { ObjectId } from 'mongodb'
 
 export class AccountMongoRepository implements
   AddAccountRepository,
@@ -17,7 +18,7 @@ export class AccountMongoRepository implements
   LoadAccountByIdRepository {
   async loadById (id: string): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
-    const result = await accountCollection.findOne({ _id: id })
+    const result = await accountCollection.findOne({ _id: ObjectId(id) })
     return result && {
       email: result.email,
       id: result._id,

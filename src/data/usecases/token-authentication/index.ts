@@ -14,7 +14,6 @@ export class DbTokenAuthentication implements TokenAuthentication {
   async auth (token: string): Promise<AuthenticatedAccountModel> {
     const { id } = await this.decrypter.decrypt(token)
     const account = await this.loadAccountByIdRepository.loadById(id)
-
     if (account) {
       return {
         accessToken: account.accessToken,
