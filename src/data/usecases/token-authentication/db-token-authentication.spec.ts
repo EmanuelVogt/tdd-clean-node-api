@@ -46,6 +46,14 @@ const makeSut = (): SutTypes => {
 }
 
 describe('DbTokenAuthentication UseCase', () => {
+  test('should call LoadAccountByIdRepository with correct id', async () => {
+    const { sut, loadAccountByIdRepositoryStub, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(new Promise(resolve => resolve({ id: 'any_id' })))
+    const loadSpy = jest.spyOn(loadAccountByIdRepositoryStub, 'loadById')
+    await sut.auth('any_token')
+    expect(loadSpy).toHaveBeenCalledWith('any_id')
+  })
+
   test('should call Decrypter with correct token', async () => {
     const { sut, decrypterStub } = makeSut()
     const loadSpy = jest.spyOn(decrypterStub, 'decrypt')
