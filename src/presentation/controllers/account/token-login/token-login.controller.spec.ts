@@ -71,4 +71,11 @@ describe('token login controller', () => {
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(unautorized())
   })
+
+  test('should call TokenAuthentication with correct values', async () => {
+    const { sut, httpRequest, tokenAuthenticationStub } = makeSut()
+    const authSpy = jest.spyOn(tokenAuthenticationStub, 'auth')
+    await sut.handle(httpRequest)
+    expect(authSpy).toHaveBeenCalledWith({ token: 'any_token' })
+  })
 })
