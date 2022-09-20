@@ -1,21 +1,10 @@
-import { MissingParamError } from '@/presentation/errors'
-import { badRequest, ok, serverError, unautorized } from '@/presentation/helpers/http'
+import { ok, serverError, unautorized } from '@/presentation/helpers/http'
 import {
   AuthenticatedAccountModel,
   HttpRequest,
-  TokenAuthentication,
-  Validation
+  TokenAuthentication
 } from './protocols'
 import { TokenLoginController } from './token-login.controller'
-
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error {
-      return null
-    }
-  }
-  return new ValidationStub()
-}
 
 const makeTokenAuthentication = (): TokenAuthentication => {
   class TokenAuthenticationStub implements TokenAuthentication {
@@ -38,13 +27,11 @@ type SutTypes = {
   httpRequest: HttpRequest
   sut: TokenLoginController
   tokenAuthenticationStub: TokenAuthentication
-  validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const tokenAuthenticationStub = makeTokenAuthentication()
-  const validationStub = makeValidation()
-  const sut = new TokenLoginController(tokenAuthenticationStub, validationStub)
+  const sut = new TokenLoginController(tokenAuthenticationStub)
   const fakeError = new Error()
   fakeError.stack = 'any_stack'
 
@@ -55,7 +42,6 @@ const makeSut = (): SutTypes => {
   }
 
   return {
-    validationStub,
     fakeError,
     httpRequest,
     sut,
@@ -100,17 +86,22 @@ describe('token login controller', () => {
     }))
   })
 
-  test('should call Validation with correct values', async () => {
-    const { sut, validationStub, httpRequest } = makeSut()
-    const validateSpy = jest.spyOn(validationStub, 'validate')
-    await sut.handle(httpRequest)
-    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  test('should return 401 if invalid token is provided', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({
+      body: {
+        token: null
+      }
+    })
+    expect(httpResponse).toEqual(unautorized())
   })
 
-  test('should return 400 if valididation return an error', async () => {
-    const { sut, validationStub, httpRequest } = makeSut()
-    jest.spyOn(validationStub, 'validate').mockReturnValue(new MissingParamError('any_field'))
+  test('should return 500 if TokenAuthentication throws', async () => {
+    const { sut, tokenAuthenticationStub, httpRequest } = makeSut()
+    jest.spyOn(tokenAuthenticationStub, 'auth').mockImplementationOnce(async () => {
+      return await new Promise((resolve, reject) => reject(new Error()))
+    })
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
