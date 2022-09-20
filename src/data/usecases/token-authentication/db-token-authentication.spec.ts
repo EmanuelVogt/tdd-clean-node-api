@@ -19,7 +19,7 @@ const makeLoadAccountByIdRepository = (): LoadAccountByIdRepository => {
           name: 'any_name',
           email: 'any_email',
           password: 'any_password',
-          accessToken: 'any_accessToken',
+          accessToken: 'any_token',
           role: 'any_role'
         }
       ))
@@ -52,6 +52,22 @@ describe('DbTokenAuthentication UseCase', () => {
     const loadSpy = jest.spyOn(loadAccountByIdRepositoryStub, 'loadById')
     await sut.auth('any_token')
     expect(loadSpy).toHaveBeenCalledWith('any_id')
+  })
+
+  test('should throw if LoadAccountByIdRepository throws', async () => {
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountByIdRepositoryStub, 'loadById').mockReturnValueOnce(
+      new Promise((resolve, reject) => reject(new Error()))
+    )
+    const promise = sut.auth('any_token')
+    void expect(promise).rejects.toThrow()
+  })
+
+  test('should return null if LoadAccountByIdRepository returns null', async () => {
+    const { sut, loadAccountByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountByIdRepositoryStub, 'loadById').mockReturnValueOnce(null)
+    const account = await sut.auth('any_token')
+    expect(account).toBeFalsy()
   })
 
   test('should call Decrypter with correct token', async () => {

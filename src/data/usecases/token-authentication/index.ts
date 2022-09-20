@@ -15,12 +15,15 @@ export class DbTokenAuthentication implements TokenAuthentication {
     const { id } = await this.decrypter.decrypt(token)
     const account = await this.loadAccountByIdRepository.loadById(id)
 
-    return {
-      accessToken: account.accessToken,
-      email: account.email,
-      id: account.id,
-      name: account.name,
-      role: account.role
-    } || null
+    if (account) {
+      return {
+        accessToken: account.accessToken,
+        email: account.email,
+        id: account.id,
+        name: account.name,
+        role: account.role
+      }
+    }
+    return null
   }
 }
