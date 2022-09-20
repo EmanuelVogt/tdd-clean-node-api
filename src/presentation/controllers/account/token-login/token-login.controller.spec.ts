@@ -4,7 +4,6 @@ import {
   AuthenticatedAccountModel,
   HttpRequest,
   TokenAuthentication,
-  TokenAuthenticationModel,
   Validation
 } from './protocols'
 import { TokenLoginController } from './token-login.controller'
@@ -20,7 +19,7 @@ const makeValidation = (): Validation => {
 
 const makeTokenAuthentication = (): TokenAuthentication => {
   class TokenAuthenticationStub implements TokenAuthentication {
-    async auth ({ token }: TokenAuthenticationModel): Promise<AuthenticatedAccountModel> {
+    async auth (token: string): Promise<AuthenticatedAccountModel> {
       return await new Promise(resolve => resolve({
         email: 'any_email',
         id: 'any_id',
@@ -75,7 +74,7 @@ describe('token login controller', () => {
     const { sut, httpRequest, tokenAuthenticationStub } = makeSut()
     const authSpy = jest.spyOn(tokenAuthenticationStub, 'auth')
     await sut.handle(httpRequest)
-    expect(authSpy).toHaveBeenCalledWith({ token: 'any_token' })
+    expect(authSpy).toHaveBeenCalledWith('any_token')
   })
 
   test('should return 500 if TokenAuthentication throws', async () => {

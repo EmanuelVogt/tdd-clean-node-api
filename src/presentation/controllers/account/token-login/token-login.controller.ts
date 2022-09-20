@@ -14,7 +14,7 @@ export class TokenLoginController implements Controller {
         return badRequest(error)
       }
       const { token } = httpRequest.body
-      const account = await this.tokenAuthentication.auth({ token })
+      const account = await this.tokenAuthentication.auth(token)
       if (!account) {
         return unautorized()
       }

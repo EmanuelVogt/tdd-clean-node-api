@@ -7,10 +7,6 @@ export interface AuthenticatedAccountModel {
   accessToken: string
 }
 
-export interface TokenAuthenticationModel {
-  token: string
-}
-
 export interface TokenAuthentication {
-  auth: ({ token }: TokenAuthenticationModel) => Promise<AuthenticatedAccountModel>
+  auth: (token: string) => Promise<AuthenticatedAccountModel>
 }
