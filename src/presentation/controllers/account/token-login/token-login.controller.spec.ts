@@ -1,4 +1,5 @@
-import { serverError, unautorized } from '@/presentation/helpers/http'
+import { MissingParamError } from '@/presentation/errors'
+import { badRequest, ok, serverError, unautorized } from '@/presentation/helpers/http'
 import {
   AuthenticatedAccountModel,
   HttpRequest,
@@ -26,7 +27,6 @@ const makeTokenAuthentication = (): TokenAuthentication => {
         name: 'any_name',
         accessToken: 'any_access_token',
         role: 'any_role'
-
       }))
     }
   }
@@ -78,12 +78,40 @@ describe('token login controller', () => {
     expect(authSpy).toHaveBeenCalledWith({ token: 'any_token' })
   })
 
-  test('should return 500 if Authentication throws', async () => {
+  test('should return 500 if TokenAuthentication throws', async () => {
     const { sut, tokenAuthenticationStub, httpRequest } = makeSut()
     jest.spyOn(tokenAuthenticationStub, 'auth').mockImplementationOnce(async () => {
       return await new Promise((resolve, reject) => reject(new Error()))
     })
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('should return 200 and an account if TokenAuthentication succeed', async () => {
+    const { sut, httpRequest } = makeSut()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(ok({
+      account: {
+        email: 'any_email',
+        id: 'any_id',
+        name: 'any_name',
+        accessToken: 'any_access_token',
+        role: 'any_role'
+      }
+    }))
+  })
+
+  test('should call Validation with correct values', async () => {
+    const { sut, validationStub, httpRequest } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    await sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+
+  test('should return 400 if valididation return an error', async () => {
+    const { sut, validationStub, httpRequest } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValue(new MissingParamError('any_field'))
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
   })
 })
