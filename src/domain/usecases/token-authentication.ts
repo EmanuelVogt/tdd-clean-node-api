@@ -1,11 +1,4 @@
-
-export interface AuthenticatedAccountModel {
-  id: string
-  name: string
-  email: string
-  role: string
-  accessToken: string
-}
+import { AuthenticatedAccountModel } from '../models/account'
 
 export interface TokenAuthentication {
   auth: (token: string) => Promise<AuthenticatedAccountModel>
