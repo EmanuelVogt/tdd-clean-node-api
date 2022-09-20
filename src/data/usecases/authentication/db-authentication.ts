@@ -4,7 +4,8 @@ import {
   HashComparer,
   LoadAccountByEmailRepository,
   Encrypter,
-  UpdateAccessTokenRepository
+  UpdateAccessTokenRepository,
+  AuthenticatedAccountModel
 } from './db-authentication-protocols'
 
 export class DbAuthentication implements Authentication {
@@ -15,14 +16,20 @@ export class DbAuthentication implements Authentication {
     private readonly updateAccessTokenRepository: UpdateAccessTokenRepository
   ) { }
 
-  async auth ({ email, password }: AuthenticationModel): Promise<string> {
+  async auth ({ email, password }: AuthenticationModel): Promise<AuthenticatedAccountModel> {
     const account = await this.loadAccountByEmailRepository.loadAccountByEmail(email)
     if (account) {
       const isValid = await this.hashComparer.compare(password, account.password)
       if (isValid) {
         const accessToken = await this.encrypter.encrypt(account.id)
         await this.updateAccessTokenRepository.updateAccessToken(accessToken, account.id)
-        return accessToken
+        return {
+          accessToken,
+          email: account.email,
+          id: account.id,
+          name: account.name,
+          role: account.role
+        }
       }
     }
     return null
