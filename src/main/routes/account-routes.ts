@@ -8,5 +8,5 @@ import { makeLogErrorControllerFactory } from '../factories/decorators/log-error
 export default (router: Router): void => {
   router.post('/signup', adapterRoute(makeLogErrorControllerFactory(makeSignupController())))
   router.post('/login', adapterRoute(makeLogErrorControllerFactory(makeLoginController())))
-  router.get('/token-login', adapterRoute(makeLogErrorControllerFactory(makeTokenLoginController())))
+  router.post('/token-login', adapterRoute(makeLogErrorControllerFactory(makeTokenLoginController())))
 }
