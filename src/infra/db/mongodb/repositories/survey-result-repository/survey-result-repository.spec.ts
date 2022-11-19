@@ -75,5 +75,23 @@ describe('SurveyMongoRepository', () => {
       void expect(surveyResult.id).toBeTruthy()
       void expect(surveyResult.answer).toBe(fakeSurvey.answers[0].answer)
     })
+
+    test('should update an survey result if its not new', async () => {
+      const fakeSurvey = await makeFakeSurvey()
+      const fakeAccount = await makeFakeAccount()
+      const res = await surveyResultCollection.insertOne({
+        surveyId: fakeSurvey.id,
+        accountId: fakeAccount.id,
+        answer: fakeSurvey.answers[0].answer,
+        data: new Date()
+      })
+      const { sut } = makeSut()
+
+      const surveyResult = await sut.save({ accountId: fakeAccount.id, answer: fakeSurvey.answers[1].answer, date: new Date(), surveyId: fakeSurvey.id })
+      console.log(surveyResult)
+      void expect(surveyResult).toBeTruthy()
+      void expect(surveyResult.id).toEqual(res.ops[0]._id)
+      void expect(surveyResult.answer).toBe(fakeSurvey.answers[1].answer)
+    })
   })
 })
