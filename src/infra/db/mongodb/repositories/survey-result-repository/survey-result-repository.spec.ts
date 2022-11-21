@@ -70,7 +70,6 @@ describe('SurveyMongoRepository', () => {
       const fakeAccount = await makeFakeAccount()
       const { sut } = makeSut()
       const surveyResult = await sut.save({ accountId: fakeAccount.id, answer: fakeSurvey.answers[0].answer, date: new Date(), surveyId: fakeSurvey.id })
-      console.log(surveyResult)
       void expect(surveyResult).toBeTruthy()
       void expect(surveyResult.id).toBeTruthy()
       void expect(surveyResult.answer).toBe(fakeSurvey.answers[0].answer)
