@@ -49,9 +49,21 @@ describe('Save Survey result routes', () => {
           accessToken
         }
       })
-
+      const surveyRes = await surveyCollection.insertOne({
+        question: 'any_question',
+        answers: [{
+          answer: 'any_answer',
+          image: 'any_image'
+        },
+        {
+          answer: 'any_answer2',
+          image: 'any_image2'
+        }
+        ],
+        date: new Date()
+      })
       await request(app)
-        .put('/api/surveys/any_id/results')
+        .put(`/api/surveys/${surveyRes.ops[0]._id as string}/results`)
         .set('x-access-token', accessToken)
         .send({
           answer: 'any_answer'
