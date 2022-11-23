@@ -1,4 +1,5 @@
 import {
+  AuthenticatedAccountModel,
   Authentication,
   AuthenticationModel,
   HttpRequest,
@@ -8,6 +9,13 @@ import { MissingParamError } from '@/presentation/errors'
 import { badRequest, unautorized, serverError, ok } from '@/presentation/helpers/http'
 import { LoginController } from './login.controlller'
 
+const fakeAuthenticatedAccountModel = (): AuthenticatedAccountModel => ({
+  id: 'any_id',
+  name: 'any_name',
+  email: 'any_email',
+  role: 'any_role',
+  accessToken: 'any_access_token'
+})
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
     validate (input: any): Error {
@@ -19,8 +27,8 @@ const makeValidation = (): Validation => {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth ({ email, password }: AuthenticationModel): Promise<string> {
-      return await new Promise(resolve => resolve('any_token'))
+    async auth ({ email, password }: AuthenticationModel): Promise<AuthenticatedAccountModel> {
+      return await new Promise(resolve => resolve(fakeAuthenticatedAccountModel()))
     }
   }
 
@@ -59,7 +67,7 @@ describe('login controller', () => {
   test('should return Unautorized with 401 if invalid credentials are provided', async () => {
     const { sut, httpRequest, authenticationStub } = makeSut()
     jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(
-      async () => await new Promise(resolve => resolve('')))
+      async () => await new Promise(resolve => resolve(null)))
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(unautorized())
   })
@@ -83,7 +91,7 @@ describe('login controller', () => {
   test('should return 200 if Authentication succeed', async () => {
     const { sut, httpRequest } = makeSut()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ok({ accessToken: 'any_token' }))
+    expect(httpResponse).toEqual(ok({ account: fakeAuthenticatedAccountModel() }))
   })
 
   test('should call Validation with correct values', async () => {

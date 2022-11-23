@@ -3,7 +3,7 @@ import {
   MissingParamError,
   ForbidenError
 } from '../../../errors'
-import { AccountModel, AddAccount, Authentication, AuthenticationModel, HttpRequest } from './signup-protocols'
+import { AccountModel, AddAccount, AuthenticatedAccountModel, Authentication, AuthenticationModel, HttpRequest } from './signup-protocols'
 import { badRequest, ok, serverError, forbidden } from '@/presentation/helpers/http'
 import { Validation } from '@/presentation/protocols/validation'
 
@@ -26,8 +26,14 @@ const makeAddAccount = (): AddAccount => {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth ({ email, password }: AuthenticationModel): Promise<string> {
-      return await new Promise(resolve => resolve('any_token'))
+    async auth ({ email, password }: AuthenticationModel): Promise<AuthenticatedAccountModel> {
+      return await new Promise(resolve => resolve({
+        id: 'any_id',
+        name: 'any_name',
+        email: 'any_email',
+        role: 'any_role',
+        accessToken: 'any_token'
+      }))
     }
   }
 
