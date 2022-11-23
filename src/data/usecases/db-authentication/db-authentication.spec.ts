@@ -4,9 +4,9 @@ import {
   LoadAccountByEmailRepository,
   Encrypter,
   UpdateAccessTokenRepository
-} from './db-authentication-protocols'
-import { AccountModel } from '../add-account/db-add-account-protocols'
-import { DbAuthentication } from './db-authentication'
+} from './protocols'
+import { AccountModel } from '../db-add-account/protocols'
+import { DbAuthentication } from '.'
 
 const faceAccount: AccountModel = ({
   id: 'any_id',

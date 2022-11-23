@@ -1,5 +1,5 @@
 
-import { DbAddSurvey } from '@/data/usecases/add-survey/db-add-survey'
+import { DbAddSurvey } from '@/data/usecases/db-add-survey'
 import { SurveyMongoRepository } from '@/infra/db/mongodb/repositories/survey-repository/survey-repository'
 import { AddSurveyController } from '@/presentation/controllers/survey/add-survey/add-survey-controller'
 import { Controller } from '@/presentation/protocols'

@@ -71,4 +71,24 @@ describe('SurveyMongoRepository', () => {
       void expect(result.length).toBe(0)
     })
   })
+
+  describe('loadById', () => {
+    test('should return all survey on success', async () => {
+      const res = await surveyCollection.insertOne({
+        question: 'any_question',
+        answers: [{ image: 'any_image', answer: 'any_answer' }],
+        date: new Date()
+      })
+      const id = res.ops[0]._id
+      const { sut } = makeSut()
+      const result = await sut.loadById(id)
+      void expect(result).toBeTruthy()
+    })
+
+    test('should return all survey on success', async () => {
+      const { sut } = makeSut()
+      const result = await sut.load()
+      void expect(result.length).toBe(0)
+    })
+  })
 })

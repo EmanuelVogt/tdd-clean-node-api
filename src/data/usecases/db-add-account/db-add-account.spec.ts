@@ -1,11 +1,11 @@
-import { DbAddAccount } from './db-add-account'
+import { DbAddAccount } from '.'
 import {
   AccountModel,
   AddAccountModel,
   Hasher,
   AddAccountRepository,
   LoadAccountByEmailRepository
-} from './db-add-account-protocols'
+} from './protocols'
 
 interface AccountData {
   name: string
