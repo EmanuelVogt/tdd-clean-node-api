@@ -1,7 +1,7 @@
 import {
   AuthenticatedAccountModel,
   Authentication,
-  AuthenticationModel,
+  AuthenticationParams,
   HttpRequest,
   Validation
 } from './login-protocols'
@@ -27,7 +27,7 @@ const makeValidation = (): Validation => {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth ({ email, password }: AuthenticationModel): Promise<AuthenticatedAccountModel> {
+    async auth ({ email, password }: AuthenticationParams): Promise<AuthenticatedAccountModel> {
       return await new Promise(resolve => resolve(fakeAuthenticatedAccountModel()))
     }
   }

@@ -1,6 +1,6 @@
 import {
   AccountModel,
-  AddAccountModel,
+  AddAccountParams,
   AddAccountRepository,
   LoadAccountByEmailRepository,
   UpdateAccessTokenRepository
@@ -50,7 +50,7 @@ export class AccountMongoRepository implements
     }
   }
 
-  async create (values: AddAccountModel): Promise<AccountModel> {
+  async create (values: AddAccountParams): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
     const result = await accountCollection.insertOne(values)
     return result && {

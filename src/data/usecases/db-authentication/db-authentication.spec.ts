@@ -1,5 +1,5 @@
 import {
-  AuthenticationModel,
+  AuthenticationParams,
   HashComparer,
   LoadAccountByEmailRepository,
   Encrypter,
@@ -15,7 +15,7 @@ const faceAccount: AccountModel = ({
   password: 'hashed_password'
 })
 
-const fakeAuthentication: AuthenticationModel = ({ email: 'any_email@mail.com', password: 'any_password' })
+const fakeAuthentication: AuthenticationParams = ({ email: 'any_email@mail.com', password: 'any_password' })
 
 const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
   class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {

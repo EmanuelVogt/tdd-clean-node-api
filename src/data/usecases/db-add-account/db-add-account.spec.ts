@@ -1,7 +1,7 @@
 import { DbAddAccount } from '.'
 import {
   AccountModel,
-  AddAccountModel,
+  AddAccountParams,
   Hasher,
   AddAccountRepository,
   LoadAccountByEmailRepository
@@ -44,7 +44,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
 
 const makeAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async create (values: AddAccountModel): Promise<AccountModel> {
+    async create (values: AddAccountParams): Promise<AccountModel> {
       return await new Promise((resolve) => resolve(makeFakeAccount()))
     }
   }

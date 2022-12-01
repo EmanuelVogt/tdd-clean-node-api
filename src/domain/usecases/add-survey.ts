@@ -2,12 +2,12 @@ export interface Answer {
   image: string
   answer: string
 }
-export interface AddSurveyModel {
+export interface AddSurveyParams {
   question: string
   answers: Answer[]
   date: Date
 }
 
 export interface AddSurvey {
-  add: (surveyData: AddSurveyModel) => Promise<void>
+  add: (surveyData: AddSurveyParams) => Promise<void>
 }
