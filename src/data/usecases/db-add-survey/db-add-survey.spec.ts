@@ -1,4 +1,3 @@
-
 import { DbAddSurvey } from '.'
 import { AddSurveyParams, AddSurveyRepository } from './protocols'
 import MockDate from 'mockdate'
