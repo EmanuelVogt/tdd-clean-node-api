@@ -1,5 +1,4 @@
 import {
-  HttpRequest,
   HttpResponse,
   Controller,
   AddAccount,
@@ -17,22 +16,30 @@ export class SignUpController implements Controller {
     private readonly authentication: Authentication
   ) { }
 
-  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle (req: SignUpController.Req): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(httpRequest.body)
+      const error = this.validation.validate(req)
       if (error) {
         return badRequest(error)
       }
-      const { name, email, password, role } = httpRequest.body
-      const account = await this.addAccount.create({ email, name, password, role })
+      const account = await this.addAccount.create(req)
       if (!account) {
         return forbidden(new ForbidenError())
       }
-      const { accessToken } = await this.authentication.auth({ email, password })
+      const { accessToken } = await this.authentication.auth(req)
       const dataToSend = { ...account, accessToken }
       return ok(dataToSend)
     } catch (error) {
       return serverError(error)
     }
+  }
+}
+
+declare module SignUpController {
+  type Req = {
+    name: string
+    email: string
+    password: string
+    role: string
   }
 }

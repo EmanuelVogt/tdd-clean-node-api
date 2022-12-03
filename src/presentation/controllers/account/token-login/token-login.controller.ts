@@ -1,18 +1,18 @@
 import { unautorized, ok, serverError } from '@/presentation/helpers/http'
-import { Controller, HttpRequest, HttpResponse, TokenAuthentication } from './protocols'
+import { Controller, HttpResponse, TokenAuthentication } from './protocols'
 
 export class TokenLoginController implements Controller {
   constructor (
     private readonly tokenAuthentication: TokenAuthentication
   ) { }
 
-  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle (req: TokenLoginController.Req): Promise<HttpResponse> {
     try {
-      const { token } = httpRequest.body
-      if (!token) {
+      const { accessToken } = req
+      if (!accessToken) {
         return unautorized()
       }
-      const account = await this.tokenAuthentication.auth(token)
+      const account = await this.tokenAuthentication.auth(accessToken)
       if (!account) {
         return unautorized()
       }
@@ -20,5 +20,11 @@ export class TokenLoginController implements Controller {
     } catch (error) {
       return serverError(error)
     }
+  }
+}
+
+declare module TokenLoginController {
+  type Req = {
+    accessToken: string
   }
 }

@@ -1,5 +1,5 @@
 export interface Answer {
-  image: string
+  image?: string
   answer: string
 }
 export interface AddSurveyParams {

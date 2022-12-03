@@ -1,10 +1,10 @@
 import { noContent, ok, serverError } from '@/presentation/helpers/http'
-import { Controller, HttpRequest, HttpResponse, LoadSurveys } from './protocols'
+import { Controller, HttpResponse, LoadSurveys } from './protocols'
 
 export default class LoadSurveysController implements Controller {
   constructor (private readonly loadSurveys: LoadSurveys) {}
 
-  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle (req: LoadSurveysController.Req): Promise<HttpResponse> {
     try {
       const surveys = await this.loadSurveys.load()
       if (surveys.length === 0) return noContent()
@@ -12,5 +12,10 @@ export default class LoadSurveysController implements Controller {
     } catch (error) {
       return serverError(error)
     }
+  }
+}
+
+declare module LoadSurveysController {
+  type Req = {
   }
 }
